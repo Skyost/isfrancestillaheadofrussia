@@ -1,0 +1,80 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+html, body {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	overflow: hidden;
+	margin: 0;
+}
+
+#loader {
+	z-index: 1;
+	height: 100%;
+	width: 100%;
+	background-color: white;
+	position: absolute;
+	margin: 0 auto;
+	cursor: wait;
+	text-align: center;
+}
+
+#loader div {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+#loader img {
+	max-width: 80%;
+}
+
+#page {
+	height: 100%;
+	text-align: center;
+}
+
+#page h1 {
+	font-size: 6em;
+	text-transform: UPPERCASE;
+	margin-bottom: 0;
+}
+
+#page footer {
+	z-index: 2;
+	position: fixed;
+	height: 1em;
+	font-size: 0.6em;
+	left: 0.3em;
+	bottom: 0.6em;
+}
+
+#page footer a:link {
+	color: #3498DB;
+	text-decoration: none;
+}
+
+#page footer a:visited {
+	color: #3498DB;
+	text-decoration: none;
+}
+
+#page footer a:hover {
+	font-weight: bold;
+}
+
+#page footer a:active {
+	color: #3498DB;
+	text-decoration: none;
+}
+
+.yes {
+	color: #2ECC71;
+}
+
+.no {
+	color: #E74C3C;
+}
