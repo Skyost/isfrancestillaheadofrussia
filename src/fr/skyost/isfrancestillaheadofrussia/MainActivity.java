@@ -95,9 +95,19 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Refresh the results.
+	 */
+	
 	public final void refresh() {
 		new Parser(this).execute(new Void[0]);
 	}
+	
+	/**
+	 * Called when a parse is completed.
+	 * 
+	 * @param countries The countries.
+	 */
 
 	public final void onParseCompleted(final Country... countries) {
 		if(countries == null || countries.length != 2) {
@@ -111,6 +121,14 @@ public class MainActivity extends Activity {
 		footer.setText(TextUtils.concat(countries[0].toString(resources) + ". " + countries[1].toString(resources) + ". ", footer.getText()));
 		System.out.println(footer.getText());
 	}
+	
+	/**
+	 * Shows a response on the screen.
+	 * 
+	 * @param response The response.
+	 * @param size The font' size.
+	 * @param good If it is good, the response will be displayed in green. Otherwise it is red.
+	 */
 	
 	public final void setResponse(final String response, final float size, final boolean good) {
 		final TextView textViewResponse = (TextView)this.findViewById(R.id.main_textview_response);

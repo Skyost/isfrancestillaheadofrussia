@@ -11,7 +11,6 @@ import org.jsoup.select.Elements;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.Parcel;
 import fr.skyost.isfrancestillaheadofrussia.Parser.Country;
 
 public class Parser extends AsyncTask<Void, Void, Country[]> {
@@ -90,6 +89,12 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 		ex.printStackTrace();
 		parent.setResponse(parent.getResources().getString(R.string.main_textfield_response_error, ex.getClass().getName()), 20f, false);
 	}
+	
+	/**
+	 * Gets the source url as string.
+	 * 
+	 * @return The source url.
+	 */
 
 	public static final String getSource() {
 		return String.format(Locale.getDefault(), URL, YEAR);
@@ -103,7 +108,7 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 		public final String scrappingName;
 		public int ranking = -1;
 		public float points;
-
+		
 		private Country(final String name, final String scrappingName, final int ranking, final float points) {
 			this.name = name;
 			this.scrappingName = scrappingName;
@@ -111,17 +116,18 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 			this.points = points;
 		}
 		
-		private Country(final Parcel parcel) {
-			name = parcel.readString();
-			scrappingName = parcel.readString();
-			ranking = parcel.readInt();
-			points = parcel.readFloat();
-		}
-
 		@Override
 		public final String toString() {
 			return "Please use toString(resources).";
 		}
+		
+		/**
+		 * The real toString() method.
+		 * 
+		 * @param resources Resources needed to get the string.
+		 * 
+		 * @return The String representation of this object.
+		 */
 		
 		public final String toString(final Resources resources) {
 			return resources.getString(R.string.parser_country_tostring, name, ranking, String.valueOf(points));
