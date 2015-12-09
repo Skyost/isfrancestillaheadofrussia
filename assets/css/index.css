@@ -71,6 +71,16 @@ body {
 	text-decoration: none;
 }
 
+#page footer #market-link:before {
+	content: "";
+	display: inline-block;
+	background: url('https://ssl.gstatic.com/android/market_images/web/favicon.ico') no-repeat 0 0;
+	background-size: 100%;
+	margin: 0 0.2em 0 0.2em;
+	height: 1em;
+	width: 1em;
+}
+
 .yes {
 	color: #2ECC71;
 }
