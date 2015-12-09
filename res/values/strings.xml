@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Is France still ahead of Russia ?</string>
+    <string name="app_version">0.1</string>
+    <string name="app_author">Skyost</string>
+    <string name="ranking_source">Bert Kassies</string>
+    <string name="main_textfield_response_yes">YES</string>
+    <string name="main_textfield_response_no">NO</string>
+    <string name="main_textfield_response_error" formatted="false">Error :\n%s</string>
+    <string name="main_textfield_footer" formatted="false">Source : %s. Created by %s.</string>
+    <string name="main_share_title">Share it !</string>
+    <string name="main_share_message_yes" formatted="false">%s (%s) is still ahead of %s (%s) !</string>
+    <string name="main_share_message_no" formatted="false">%s (%s) is now above %s (%s) !</string>
+    <string name="main_menu_refresh">Refresh&#8230;</string>
+    <string name="parser_countries_one">France</string>
+    <string name="parser_countries_two">Russia</string>
+    <string name="parser_dialog_title">Loading&#8230;</string>
+    <string name="parser_dialog_message">Please wait&#8230;</string>
+    <string name="parser_country_tostring" formatted="false">%s ranking : %d, points %s</string>
+
+</resources>
