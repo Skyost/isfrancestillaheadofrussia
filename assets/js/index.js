@@ -16,7 +16,6 @@ function refreshRankings() {
 	$.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent('http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank' + year + '.html') + '&callback=?', function(data) {
 		var wrapper = $('<div/>');
 		wrapper.html(data.contents);
-		var isFirst = true;
 		var currentRanking = 0;
 		var ranking = wrapper.find('tr td');
 		for(var index = 0; index < ranking.length; index++) {
