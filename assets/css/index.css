@@ -43,6 +43,10 @@ body {
 	margin-bottom: 0;
 }
 
+#page h1 #link {
+	cursor: pointer;
+}
+
 #page footer {
 	z-index: 2;
 	position: fixed;
@@ -79,6 +83,10 @@ body {
 	margin: 0 0.2em 0 0.2em;
 	height: 1em;
 	width: 1em;
+}
+
+#dialog {
+	text-align: center;
 }
 
 .yes {

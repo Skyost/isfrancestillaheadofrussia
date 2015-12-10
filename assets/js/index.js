@@ -1,3 +1,10 @@
+stLight.options({
+	publisher: "03ea2b5b-f960-4edf-b456-9565dbf2be0e",
+	doNotHash: true,
+	doNotCopy: true,
+	hashAddressBar: false
+});
+
 var year = 2016;
 
 var countryOne = createDefaultCountry('France');
@@ -67,20 +74,26 @@ function centerTitle(documentHeight) {
 }
 
 function refreshTitle() {
-	var title = $('#page h1');
+	var link = $('#page h1 #link');
+	link.colorbox({
+		inline: true,
+		href: '#dialog',
+		height: '80%',
+		width: '80%'
+	});
 	if(countryOne.ranking < countryTwo.ranking) {
-		title.text('Yes');
-		title.addClass('yes');
+		link.text('Yes');
+		$('#page h1').addClass('yes');
 		$('#favicon').attr('href', 'assets/img/yes.png');
 	}
 	else {
-		title.text('No');
-		title.addClass('no');
+		link.text('No');
+		$('#page h1').addClass('no');
 		$('#favicon').attr('href', 'assets/img/no.png');
 	}
 	centerTitle($(this).height());
 	$('#page footer').html(countryOne.toString() + '. ' + countryTwo.toString() + '. ' + footbar);
 	console.log(countryOne.toString());
 	console.log(countryTwo.toString());
-	console.log('Is ' + countryOne.name + ' still ahead of ' + countryTwo.name + ' ? ' + title.text() + '.');
+	console.log('Is ' + countryOne.name + ' still ahead of ' + countryTwo.name + ' ? ' + link.text() + '.');
 }
