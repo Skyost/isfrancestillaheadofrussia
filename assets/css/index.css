@@ -34,10 +34,10 @@ body {
 
 #page {
 	height: 100%;
-	text-align: center;
 }
 
 #page h1 {
+	text-align: center;
 	font-size: 6em;
 	text-transform: UPPERCASE;
 	margin-bottom: 0;
@@ -50,10 +50,18 @@ body {
 #page footer {
 	z-index: 2;
 	position: fixed;
-	height: 1em;
-	font-size: 0.6em;
+	height: 100%;
+	width: 100%;
+	color: #141414;
+	font-size: 0.7em;
+}
+
+#page footer p {
+	text-align: left;
+	position: fixed;
 	left: 0.3em;
-	bottom: 0.6em;
+	bottom: 0.3em;
+	margin-bottom: 0;
 }
 
 #page footer a:link {
@@ -87,6 +95,14 @@ body {
 
 #dialog {
 	text-align: center;
+}
+
+#dialog h2 {
+	font-size: 1.5em;
+}
+
+#dialog p {
+	font-size: 1em;
 }
 
 .yes {

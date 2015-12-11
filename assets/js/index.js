@@ -5,11 +5,19 @@ stLight.options({
 	hashAddressBar: false
 });
 
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-47485074-14', 'auto');
+ga('send', 'pageview');
+
 var year = 2016;
 
 var countryOne = createDefaultCountry('France');
 var countryTwo = createDefaultCountry('Russia');
-var footbar = $('#page footer').html();
+var footer = $('#page footer p');
 
 $(document).ready(function() {
 	refreshRankings();
@@ -92,7 +100,7 @@ function refreshTitle() {
 		$('#favicon').attr('href', 'assets/img/no.png');
 	}
 	centerTitle($(this).height());
-	$('#page footer').html(countryOne.toString() + '. ' + countryTwo.toString() + '. ' + footbar);
+	footer.html(countryOne.toString() + '. ' + countryTwo.toString() + '. ' + footer.html());
 	console.log(countryOne.toString());
 	console.log(countryTwo.toString());
 	console.log('Is ' + countryOne.name + ' still ahead of ' + countryTwo.name + ' ? ' + link.text() + '.');
