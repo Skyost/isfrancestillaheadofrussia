@@ -22,6 +22,7 @@ import fr.skyost.isfrancestillaheadofrussia.utils.DefaultClickableSpan;
 public class MainActivity extends Activity implements ParserListener {
 	
 	private Country[] countries;
+	private static SpannableString spannableFooter;
 
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -53,11 +54,12 @@ public class MainActivity extends Activity implements ParserListener {
 		response.setTypeface(font, Typeface.BOLD);
 		final String source = this.getString(R.string.ranking_source);
 		final String author = this.getString(R.string.app_author);
-		final SpannableString spannableFooter = new SpannableString(this.getString(R.string.main_textfield_footer, source, author));
-		spannableFooter.setSpan(new DefaultClickableSpan(this, Parser.getSource()), spannableFooter.toString().indexOf(source), spannableFooter.toString().indexOf(source) + source.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		spannableFooter.setSpan(new DefaultClickableSpan(this, "http://www.skyost.eu"), spannableFooter.toString().indexOf(author), spannableFooter.toString().indexOf(author) + author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		if(spannableFooter == null) {
+			spannableFooter = new SpannableString(this.getString(R.string.main_textfield_footer, source, author));
+			spannableFooter.setSpan(new DefaultClickableSpan(this, Parser.getSource()), spannableFooter.toString().indexOf(source), spannableFooter.toString().indexOf(source) + source.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			spannableFooter.setSpan(new DefaultClickableSpan(this, "http://www.skyost.eu"), spannableFooter.toString().indexOf(author), spannableFooter.toString().indexOf(author) + author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
 		final TextView textViewFooter = (TextView)this.findViewById(R.id.main_textview_footer);
-		textViewFooter.setText(spannableFooter);
 		textViewFooter.setMovementMethod(LinkMovementMethod.getInstance());
 		textViewFooter.setTypeface(font);
 		if(savedInstanceState == null || savedInstanceState.getSerializable("country-one") == null || savedInstanceState.getSerializable("country-two") == null) {
@@ -99,6 +101,8 @@ public class MainActivity extends Activity implements ParserListener {
 	 */
 	
 	public final void refresh() {
+		countries = null;
+		setFooter(spannableFooter);
 		new Parser(this).execute(this);
 	}
 	
@@ -110,8 +114,7 @@ public class MainActivity extends Activity implements ParserListener {
 		this.countries = countries;
 		final boolean isAhead = countries[0].ranking < countries[1].ranking;
 		setResponse(this.getString(isAhead ? R.string.main_textfield_response_yes : R.string.main_textfield_response_no), 60f, isAhead);
-		final TextView footer = (TextView)this.findViewById(R.id.main_textview_footer);
-		footer.setText(TextUtils.concat(countries[0].toString(this) + ". " + countries[1].toString(this) + ". ", footer.getText()));
+		setFooter(countries[0].toString(this) + ". " + countries[1].toString(this) + ". ", spannableFooter);
 	}
 	
 	@Override
@@ -133,6 +136,10 @@ public class MainActivity extends Activity implements ParserListener {
 		textViewResponse.setText(response);
 		textViewResponse.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
 		textViewResponse.setTextColor(good ? Color.parseColor("#2ECC71") : Color.parseColor("#E74C3C"));
+	}
+	
+	public final void setFooter(final CharSequence... text) {
+		((TextView)this.findViewById(R.id.main_textview_footer)).setText(text.length == 1 ? text[0] : TextUtils.concat(text));
 	}
 
 }
