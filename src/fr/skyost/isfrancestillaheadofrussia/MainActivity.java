@@ -18,6 +18,7 @@ import android.widget.TextView;
 import fr.skyost.isfrancestillaheadofrussia.Parser.Country;
 import fr.skyost.isfrancestillaheadofrussia.Parser.ParserListener;
 import fr.skyost.isfrancestillaheadofrussia.utils.DefaultClickableSpan;
+import fr.skyost.isfrancestillaheadofrussia.utils.LoadingImageView;
 
 public class MainActivity extends Activity implements ParserListener {
 	
@@ -28,6 +29,14 @@ public class MainActivity extends Activity implements ParserListener {
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
+		((LoadingImageView)this.findViewById(R.id.main_imageview_refresh)).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public final void onClick(final View view) {
+				refresh();
+			}
+			
+		});
 		final Typeface font = Typeface.createFromAsset(this.getAssets(), "OpenSans-Regular.ttf");
 		final TextView response = (TextView)this.findViewById(R.id.main_textview_response);
 		response.setOnClickListener(new OnClickListener() {
@@ -102,6 +111,7 @@ public class MainActivity extends Activity implements ParserListener {
 	 */
 	
 	public final void refresh() {
+		loadingAnimation(true);
 		countries = null;
 		setFooter(spannableFooter);
 		new Parser(this).execute(this);
@@ -109,6 +119,7 @@ public class MainActivity extends Activity implements ParserListener {
 	
 	@Override
 	public final void onParseCompleted(final Country... countries) {
+		loadingAnimation(false);
 		if(countries == null || countries.length != 2) {
 			return;
 		}
@@ -120,6 +131,7 @@ public class MainActivity extends Activity implements ParserListener {
 	
 	@Override
 	public final void onParseFailed(final Exception ex) {
+		loadingAnimation(false);
 		ex.printStackTrace();
 		setResponse(this.getString(R.string.main_textfield_response_error, ex.getClass().getName()), 20f, false);
 	}
@@ -141,6 +153,14 @@ public class MainActivity extends Activity implements ParserListener {
 	
 	public final void setFooter(final CharSequence... text) {
 		((TextView)this.findViewById(R.id.main_textview_footer)).setText(text.length == 1 ? text[0] : TextUtils.concat(text));
+	}
+	
+	public final void loadingAnimation(final boolean start) {
+		if(start) {
+			((LoadingImageView)this.findViewById(R.id.main_imageview_refresh)).startLoadingAnimation();
+			return;
+		}
+		((LoadingImageView)this.findViewById(R.id.main_imageview_refresh)).stopLoadingAnimation();
 	}
 
 }

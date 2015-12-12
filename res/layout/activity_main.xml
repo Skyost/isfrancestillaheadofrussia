@@ -13,6 +13,15 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin" >
+        
+        <fr.skyost.isfrancestillaheadofrussia.utils.LoadingImageView
+            android:id="@+id/main_imageview_refresh"
+            android:contentDescription="@string/main_menu_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_menu_refresh" />
 
         <TextView
             android:id="@+id/main_textview_response"
@@ -34,6 +43,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#141414"
             android:textSize="12sp" />
+
     </RelativeLayout>
 
 </ScrollView>

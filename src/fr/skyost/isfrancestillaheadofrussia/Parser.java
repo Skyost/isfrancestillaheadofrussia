@@ -86,6 +86,9 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 	protected final void onPostExecute(final Country[] result) {
 		super.onPostExecute(result);
 		dialog.dismiss();
+		if(listeners == null || listeners.length == 0) {
+			return;
+		}
 		if(ex == null) {
 			for(final ParserListener listener : listeners) {
 				listener.onParseCompleted(result);
