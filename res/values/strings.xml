@@ -16,7 +16,15 @@
     <string name="parser_countries_one">France</string>
     <string name="parser_countries_two">Russia</string>
     <string name="parser_dialog_title">Loading&#8230;</string>
-    <string name="parser_dialog_message">Please wait&#8230;</string>
+    <string-array name="parser_dialog_messages_prefix" formatted="false">
+        <item>Installing muscles&#8230;\n%s</item>
+        <item>Week-end loading&#8230;\n%s</item>
+        <item>Calculating the difference between a man and a gentleman&#8230;\n%s</item>
+        <item>Preparing a sarcastic comment&#8230;\n%s</item>
+        <item>Proving that 1=2&#8230;\n%s</item>
+        <item>Calculating the Univers\' mass&#8230;\n%s</item>
+    </string-array>
+    <string name="parser_dialog_messages_suffix">Please wait&#8230;</string>
     <string name="parser_country_tostring" formatted="false">%s ranking : %d, points %s</string>
 
 </resources>

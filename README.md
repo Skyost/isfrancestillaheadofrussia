@@ -9,7 +9,7 @@ Scrapping. That's all.
 ![Screenshot 2](https://github.com/Skyost/isfrancestillaheadofrussia/blob/mobile/screenshots/screen-1.png)
 
 ## Download
-Get it on [Google Play](https://play.google.com/store/apps/details?id=fr.skyost.algo.isfrancestillaheadofrussia) !
+Get it on [Google Play](https://play.google.com/store/apps/details?id=fr.skyost.isfrancestillaheadofrussia) !
 
 ## Credits
 * jsoup : HTML parser.

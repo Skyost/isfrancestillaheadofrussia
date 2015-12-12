@@ -2,48 +2,53 @@ package fr.skyost.isfrancestillaheadofrussia;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.Random;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import fr.skyost.isfrancestillaheadofrussia.Parser.Country;
+import fr.skyost.isfrancestillaheadofrussia.Parser.ParserListener;
 
-public class Parser extends AsyncTask<Void, Void, Country[]> {
+public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 
 	private static final short YEAR = 2016;
 	private static final String URL = "http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank%d.html";
 
-	private final MainActivity parent;
+	private final Activity parent;
 	private final Country countryOne;
 	private final Country countryTwo;
 
 	private final ProgressDialog dialog;
+	private ParserListener[] listeners;
 	private Exception ex;
 
-	public Parser(final MainActivity parent) {
+	public Parser(final Activity parent) {
 		this.parent = parent;
-		final Resources resources = parent.getResources();
-		countryOne = new Country(resources.getString(R.string.parser_countries_one), "France", -1, -1f);
-		countryTwo = new Country(resources.getString(R.string.parser_countries_two), "Russia", -1, -1f);
+		countryOne = new Country(parent.getString(R.string.parser_countries_one), "France", -1, -1f);
+		countryTwo = new Country(parent.getString(R.string.parser_countries_two), "Russia", -1, -1f);
 		this.dialog = new ProgressDialog(parent);
 	}
 
 	@Override
 	protected final void onPreExecute() {
+		final String[] messages = parent.getResources().getStringArray(R.array.parser_dialog_messages_prefix);
 		dialog.setTitle(R.string.parser_dialog_title);
-		dialog.setMessage(parent.getString(R.string.parser_dialog_message));
+		dialog.setMessage(String.format(messages[new Random().nextInt(messages.length)], parent.getString(R.string.parser_dialog_messages_suffix)));
 		dialog.setCancelable(false);
 		dialog.show();
 	}
 
 	@Override
-	protected final Country[] doInBackground(final Void... args) {
+	protected final Country[] doInBackground(final ParserListener... listeners) {
 		try {
+			this.listeners = listeners;
 			final Document document = Jsoup.connect(getSource()).get();
 			final Elements ranking = document.select("tr td");
 			for(int i = 0, currentRanking = 0; i != ranking.size(); i++) {
@@ -83,11 +88,14 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 		super.onPostExecute(result);
 		dialog.dismiss();
 		if(ex == null) {
-			parent.onParseCompleted(result);
+			for(final ParserListener listener : listeners) {
+				listener.onParseCompleted(result);
+			}
 			return;
 		}
-		ex.printStackTrace();
-		parent.setResponse(parent.getResources().getString(R.string.main_textfield_response_error, ex.getClass().getName()), 20f, false);
+		for(final ParserListener listener : listeners) {
+			listener.onParseFailed(ex);
+		}
 	}
 	
 	/**
@@ -98,6 +106,26 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 
 	public static final String getSource() {
 		return String.format(Locale.getDefault(), URL, YEAR);
+	}
+	
+	public interface ParserListener {
+		
+		/**
+		 * Called when a parse has been completed with success.
+		 * 
+		 * @param countries The countries.
+		 */
+		
+		public void onParseCompleted(final Country... countries);
+		
+		/**
+		 * Called when a parse fail for some reason.
+		 * 
+		 * @param ex The exception occurred.
+		 */
+		
+		public void onParseFailed(final Exception ex);
+		
 	}
 
 	public static class Country implements Serializable {
@@ -118,7 +146,7 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 		
 		@Override
 		public final String toString() {
-			return "Please use toString(resources).";
+			return "Please use toString(resources) or toString(activity).";
 		}
 		
 		/**
@@ -131,6 +159,18 @@ public class Parser extends AsyncTask<Void, Void, Country[]> {
 		
 		public final String toString(final Resources resources) {
 			return resources.getString(R.string.parser_country_tostring, name, ranking, String.valueOf(points));
+		}
+		
+		/**
+		 * The real toString() method.
+		 * 
+		 * @param activity Activity needed to get the string.
+		 * 
+		 * @return The String representation of this object.
+		 */
+		
+		public final String toString(final Activity activity) {
+			return activity.getString(R.string.parser_country_tostring, name, ranking, String.valueOf(points));
 		}
 
 	}

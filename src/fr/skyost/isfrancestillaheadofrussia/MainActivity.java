@@ -2,7 +2,6 @@ package fr.skyost.isfrancestillaheadofrussia;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,9 +16,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import fr.skyost.isfrancestillaheadofrussia.Parser.Country;
+import fr.skyost.isfrancestillaheadofrussia.Parser.ParserListener;
 import fr.skyost.isfrancestillaheadofrussia.utils.DefaultClickableSpan;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ParserListener {
 	
 	private Country[] countries;
 
@@ -27,7 +27,6 @@ public class MainActivity extends Activity {
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
-		final Resources resources = this.getResources();
 		final Typeface font = Typeface.createFromAsset(this.getAssets(), "OpenSans-Regular.ttf");
 		final TextView response = (TextView)this.findViewById(R.id.main_textview_response);
 		response.setOnClickListener(new OnClickListener() {
@@ -35,11 +34,11 @@ public class MainActivity extends Activity {
 			@Override
 			public final void onClick(final View view) {
 				String text = response.getText().toString();
-				if(text.equals(resources.getString(R.string.main_textfield_response_yes))) {
-					text = resources.getString(R.string.main_share_message_yes, countries[0].name, countries[0].toString(resources), countries[1].name, countries[1].toString(resources));
+				if(text.equals(MainActivity.this.getString(R.string.main_textfield_response_yes))) {
+					text = MainActivity.this.getString(R.string.main_share_message_yes, countries[0].name, countries[0].toString(MainActivity.this), countries[1].name, countries[1].toString(MainActivity.this));
 				}
-				else if(text.equals(resources.getString(R.string.main_textfield_response_no))) {
-					text = resources.getString(R.string.main_share_message_no, countries[1].name, countries[1].toString(resources), countries[0].name, countries[0].toString(resources));
+				else if(text.equals(MainActivity.this.getString(R.string.main_textfield_response_no))) {
+					text = MainActivity.this.getString(R.string.main_share_message_no, countries[1].name, countries[1].toString(MainActivity.this), countries[0].name, countries[0].toString(MainActivity.this));
 				}
 				else {
 					return;
@@ -47,14 +46,14 @@ public class MainActivity extends Activity {
 				final Intent share = new Intent(Intent.ACTION_SEND);
 				share.setType("text/plain");
 				share.putExtra(Intent.EXTRA_TEXT, text);
-				MainActivity.this.startActivity(Intent.createChooser(share, resources.getString(R.string.main_share_title)));
+				MainActivity.this.startActivity(Intent.createChooser(share, MainActivity.this.getString(R.string.main_share_title)));
 			}
 			
 		});
 		response.setTypeface(font, Typeface.BOLD);
-		final String source = resources.getString(R.string.ranking_source);
-		final String author = resources.getString(R.string.app_author);
-		final SpannableString spannableFooter = new SpannableString(this.getResources().getString(R.string.main_textfield_footer, source, author));
+		final String source = this.getString(R.string.ranking_source);
+		final String author = this.getString(R.string.app_author);
+		final SpannableString spannableFooter = new SpannableString(this.getString(R.string.main_textfield_footer, source, author));
 		spannableFooter.setSpan(new DefaultClickableSpan(this, Parser.getSource()), spannableFooter.toString().indexOf(source), spannableFooter.toString().indexOf(source) + source.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		spannableFooter.setSpan(new DefaultClickableSpan(this, "http://www.skyost.eu"), spannableFooter.toString().indexOf(author), spannableFooter.toString().indexOf(author) + author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		final TextView textViewFooter = (TextView)this.findViewById(R.id.main_textview_footer);
@@ -100,26 +99,25 @@ public class MainActivity extends Activity {
 	 */
 	
 	public final void refresh() {
-		new Parser(this).execute(new Void[0]);
+		new Parser(this).execute(this);
 	}
 	
-	/**
-	 * Called when a parse is completed.
-	 * 
-	 * @param countries The countries.
-	 */
-
+	@Override
 	public final void onParseCompleted(final Country... countries) {
 		if(countries == null || countries.length != 2) {
 			return;
 		}
 		this.countries = countries;
-		final Resources resources = this.getResources();
 		final boolean isAhead = countries[0].ranking < countries[1].ranking;
-		setResponse(resources.getString(isAhead ? R.string.main_textfield_response_yes : R.string.main_textfield_response_no), 60f, isAhead);
+		setResponse(this.getString(isAhead ? R.string.main_textfield_response_yes : R.string.main_textfield_response_no), 60f, isAhead);
 		final TextView footer = (TextView)this.findViewById(R.id.main_textview_footer);
-		footer.setText(TextUtils.concat(countries[0].toString(resources) + ". " + countries[1].toString(resources) + ". ", footer.getText()));
-		System.out.println(footer.getText());
+		footer.setText(TextUtils.concat(countries[0].toString(this) + ". " + countries[1].toString(this) + ". ", footer.getText()));
+	}
+	
+	@Override
+	public final void onParseFailed(final Exception ex) {
+		ex.printStackTrace();
+		setResponse(this.getString(R.string.main_textfield_response_error, ex.getClass().getName()), 20f, false);
 	}
 	
 	/**
