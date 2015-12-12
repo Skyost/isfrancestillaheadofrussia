@@ -11,7 +11,6 @@ import org.jsoup.select.Elements;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import fr.skyost.isfrancestillaheadofrussia.Parser.Country;
 import fr.skyost.isfrancestillaheadofrussia.Parser.ParserListener;
@@ -146,19 +145,7 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 		
 		@Override
 		public final String toString() {
-			return "Please use toString(resources) or toString(activity).";
-		}
-		
-		/**
-		 * The real toString() method.
-		 * 
-		 * @param resources Resources needed to get the string.
-		 * 
-		 * @return The String representation of this object.
-		 */
-		
-		public final String toString(final Resources resources) {
-			return resources.getString(R.string.parser_country_tostring, name, ranking, String.valueOf(points));
+			return "Please use toString(activity).";
 		}
 		
 		/**
