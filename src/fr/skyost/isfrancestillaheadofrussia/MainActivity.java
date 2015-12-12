@@ -42,6 +42,7 @@ public class MainActivity extends Activity implements ParserListener {
 					text = MainActivity.this.getString(R.string.main_share_message_no, countries[1].name, countries[1].toString(MainActivity.this), countries[0].name, countries[0].toString(MainActivity.this));
 				}
 				else {
+					refresh();
 					return;
 				}
 				final Intent share = new Intent(Intent.ACTION_SEND);
