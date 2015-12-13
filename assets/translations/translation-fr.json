@@ -1,0 +1,12 @@
+{
+	"title": "La France est-elle toujours devant la Russie ?",
+	"description": "Vérifie si la France est toujours devant la Russie en se basant sur le classement de Bert Kassies.",
+	"yes": "Oui",
+	"no": "Non",
+	"share-it": "Le partager !",
+	"share-it-message": "Partagez ce site web fait avec <span style=\"color: #E74C3C;\">&hearts;</span> sur les réseaux sociaux :",
+	"countryOne": "France",
+	"countryTwo": "Russie",
+	"countryToString": "Rang de la {0} : {1}, points : {2}",
+	"footer": "Source : <a href=\"http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank2016.html\" target=\"_blank\">Bert Kassies</a>. Créé par <a href=\"http://www.skyost.eu\" target=\"_blank\">Skyost</a>. Disponible sur le <a id=\"market-link\" href=\"https://play.google.com/store/apps/details?id=fr.skyost.isfrancestillaheadofrussia\" target=\"_blank\">Google Play</a>.</p>"
+}

@@ -13,6 +13,15 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-47485074-14', 'auto');
 ga('send', 'pageview');
 
+if(!String.format) {
+	String.format = function(format) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		return format.replace(/{(\d+)}/g, function(match, number) { 
+			return typeof args[number] != 'undefined' ? args[number] : match;
+		});
+	};
+}
+
 var year = 2016;
 
 var countryOne = createDefaultCountry('France');
@@ -21,6 +30,25 @@ var footer = $('#page footer p');
 
 $(document).ready(function() {
 	refreshRankings();
+	$('[data-localize]').localize('translation', {
+		pathPrefix: './assets/translations',
+		callback: function(data, defaultCallback) {
+			$('[data-localize="description"]').attr('content', data.description);
+			delete data.description;
+			countryOne.displayedName = data.countryOne;
+			delete data.countryOne;
+			countryTwo.displayedName = data.countryTwo;
+			delete data.countryTwo;
+			countryOne.asString = data.countryToString;
+			countryTwo.asString = data.countryToString;
+			delete data.countryToString;
+			$('[yes="Yes"]').attr('yes', data.yes);
+			delete data.yes;
+			$('[yes="No"]').attr('no', data.no);
+			delete data.no;
+			defaultCallback(data);
+		}
+	});
 });
 
 $(window).resize(function() {
@@ -68,10 +96,12 @@ function refreshRankings() {
 function createDefaultCountry(name) {
 	return {
 		name: name,
+		displayedName: name,
 		ranking: -1,
 		points: -1,
+		asString: '{0} ranking : {1}, points : {2}',
 		toString: function() {
-			return name + ' ranking : ' + this.ranking + ', points : ' + this.points;
+			return String.format(this.asString, this.displayedName, this.ranking, this.points);
 		}
 	};
 }
@@ -90,12 +120,12 @@ function refreshTitle() {
 		width: '80%'
 	});
 	if(countryOne.ranking < countryTwo.ranking) {
-		link.text('Yes');
+		link.text(link.attr('yes'));
 		$('#page h1').addClass('yes');
 		$('#favicon').attr('href', 'assets/img/yes.png');
 	}
 	else {
-		link.text('No');
+		link.text(link.attr('no'));
 		$('#page h1').addClass('no');
 		$('#favicon').attr('href', 'assets/img/no.png');
 	}
@@ -103,5 +133,5 @@ function refreshTitle() {
 	footer.html(countryOne.toString() + '. ' + countryTwo.toString() + '. ' + footer.html());
 	console.log(countryOne.toString());
 	console.log(countryTwo.toString());
-	console.log('Is ' + countryOne.name + ' still ahead of ' + countryTwo.name + ' ? ' + link.text() + '.');
+	console.log($('title').text() + ' ' + link.text() + '.');
 }
