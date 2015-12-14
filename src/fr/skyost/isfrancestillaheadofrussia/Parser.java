@@ -21,8 +21,7 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 	private static final String URL = "http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank%d.html";
 
 	private final Activity parent;
-	private final Country countryOne;
-	private final Country countryTwo;
+	private final Country[] countries = new Country[2]; // Used to check all references in a row, AtomicReference can be used too.
 
 	private final ProgressDialog dialog;
 	private ParserListener[] listeners;
@@ -30,8 +29,8 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 
 	public Parser(final Activity parent) {
 		this.parent = parent;
-		countryOne = new Country(parent.getString(R.string.parser_countries_one), "France", -1, -1f);
-		countryTwo = new Country(parent.getString(R.string.parser_countries_two), "Russia", -1, -1f);
+		countries[0] = new Country(parent.getString(R.string.parser_countries_one), "France", -1, -1f);
+		countries[1] = new Country(parent.getString(R.string.parser_countries_two), "Russia", -1, -1f);
 		this.dialog = new ProgressDialog(parent);
 	}
 
@@ -50,9 +49,9 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 			this.listeners = listeners;
 			final Document document = Jsoup.connect(getSource()).get();
 			final Elements ranking = document.select("tr td");
-			for(int i = 0, currentRanking = 0; i != ranking.size(); i++) {
-				final Element country = ranking.get(i);
-				final String attr = country.attr("align");
+			for(int i = 0, currentRanking = 0, elementsLoaded = 0; i != ranking.size(); i++) {
+				final Element row = ranking.get(i);
+				final String attr = row.attr("align");
 				if(attr == null || !attr.equals("left")) {
 					continue;
 				}
@@ -61,20 +60,19 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 					continue;
 				}
 				currentRanking++;
-				final String name = country.text();
-				if(name.equals(countryOne.scrappingName)) {
-					countryOne.ranking = currentRanking - 1;
-					countryOne.points = Float.parseFloat(ranking.get(i + 6).text());
+				for(final Country country : countries) {
+					if(!row.text().equals(country.scrappingName)) {
+						continue;
+					}
+					country.ranking = currentRanking - 1;
+					country.points = Float.parseFloat(ranking.get(i + 6).text());
+					elementsLoaded++;
 				}
-				else if(name.equals(countryTwo.scrappingName)) {
-					countryTwo.ranking = currentRanking - 1;
-					countryTwo.points = Float.parseFloat(ranking.get(i + 6).text());
-				}
-				if(countryOne.ranking != -1 && countryTwo.ranking != -1) {
+				if(elementsLoaded == 2) {
 					break;
 				}
 			}
-			return new Country[]{countryOne, countryTwo};
+			return countries;
 		}
 		catch(final Exception ex) {
 			this.ex = ex;
