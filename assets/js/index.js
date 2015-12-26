@@ -24,9 +24,26 @@ if(!String.format) {
 
 var year = 2016;
 
-var countryOne = createDefaultCountry('France');
-var countryTwo = createDefaultCountry('Russia');
+var countryOne;
+var countryTwo;
+var loader = $('#loader');
+var refresh = $('#refresh');
 var footer = $('#page footer p');
+var defaultFooter = footer.html();
+
+var rotateLoader = function() {
+	if(!loader.is(':visible')) {
+		return;
+	}
+	refresh.rotate({
+		angle: 0,
+		animateTo: 360,
+		callback: rotateLoader,
+		easing: function (x, currentTime, value, changedValue, duration) {
+			return changedValue * (currentTime/duration) + value;
+		}
+	});
+};
 
 $(document).ready(function() {
 	refreshRankings();
@@ -46,51 +63,72 @@ $(document).ready(function() {
 			delete data.yes;
 			$('[yes="No"]').attr('no', data.no);
 			delete data.no;
+			defaultFooter = data.footer;
 			defaultCallback(data);
 		}
 	});
+});
+
+refresh.click(function() {
+	if(loader.is(':visible')) {
+		return;
+	}
+	refreshRankings();
 });
 
 $(window).resize(function() {
 	centerTitle($(this).height());
 });
 
+function resetProperties() {
+	countryOne = createDefaultCountry('France');
+	countryTwo = createDefaultCountry('Russia');
+	$('#page h1').css('margin-top', '');
+	$('#page h1 #link').text('');
+	footer.html(defaultFooter);
+}
+
 function refreshRankings() {
-	$.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent('http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank' + year + '.html') + '&callback=?', function(data) {
-		var wrapper = $('<div/>');
-		wrapper.html(data.contents);
-		var currentRanking = 0;
-		var ranking = wrapper.find('tr td');
-		for(var index = 0; index < ranking.length; index++) {
-			var country = $(ranking[index]);
-			var attr = country.attr('align');
-			if(typeof attr === typeof undefined || attr === false || attr !== 'left') {
-				continue;
+	while(!defaultFooter) {
+		continue;
+	}
+	resetProperties();
+	loader.fadeIn(500, function() {
+		$.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent('http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank' + year + '.html') + '&callback=?', function(data) {
+			var wrapper = $('<div/>');
+			wrapper.html(data.contents);
+			var currentRanking = 0;
+			var ranking = wrapper.find('tr td');
+			for(var index = 0; index < ranking.length; index++) {
+				var country = $(ranking[index]);
+				var attr = country.attr('align');
+				if(typeof attr === typeof undefined || attr === false || attr !== 'left') {
+					continue;
+				}
+				if(currentRanking == 0) {
+					currentRanking++; // < 2015
+					continue;
+				}
+				currentRanking++;
+				var name = country.text();
+				if(name == countryOne.name) {
+					countryOne.ranking = currentRanking - 1;
+					countryOne.points = $(ranking[index + 6]).text();
+				}
+				else if(name == countryTwo.name) {
+					countryTwo.ranking = currentRanking - 1;
+					countryTwo.points = $(ranking[index + 6]).text();
+				}
+				if(countryOne.ranking != -1 && countryTwo.ranking != -1) {
+					break;
+				}
 			}
-			if(currentRanking == 0) {
-				currentRanking++; // < 2015
-				continue;
-			}
-			currentRanking++;
-			var name = country.text();
-			if(name == countryOne.name) {
-				countryOne.ranking = currentRanking - 1;
-				countryOne.points = $(ranking[index + 6]).text();
-			}
-			else if(name == countryTwo.name) {
-				countryTwo.ranking = currentRanking - 1;
-				countryTwo.points = $(ranking[index + 6]).text();
-			}
-			if(countryOne.ranking != -1 && countryTwo.ranking != -1) {
-				break;
-			}
-		}
-		var loader = $('#loader');
-		loader.fadeOut(1000, function() {
-			loader.remove();
+			loader.fadeOut(1000, function() {
+				refreshTitle();
+			});
 		});
-		refreshTitle();
 	});
+	rotateLoader();
 }
 
 function createDefaultCountry(name) {
@@ -124,13 +162,18 @@ function refreshTitle() {
 		$('#page h1').addClass('yes');
 		$('#favicon').attr('href', 'assets/img/yes.png');
 	}
-	else {
+	else if(countryTwo.ranking > countryOne.ranking) {
 		link.text(link.attr('no'));
 		$('#page h1').addClass('no');
 		$('#favicon').attr('href', 'assets/img/no.png');
 	}
+	else {
+		link.text('Error');
+		$('#page h1').addClass('no');
+		$('#favicon').attr('href', 'assets/img/no.png');
+	}
 	centerTitle($(this).height());
-	footer.html(countryOne.toString() + '. ' + countryTwo.toString() + '. ' + footer.html());
+	footer.html(countryOne.toString() + '. ' + countryTwo.toString() + '. ' + defaultFooter);
 	console.log(countryOne.toString());
 	console.log(countryTwo.toString());
 	console.log($('title').text() + ' ' + link.text() + '.');
