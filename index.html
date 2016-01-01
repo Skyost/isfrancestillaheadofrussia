@@ -45,20 +45,21 @@
 			<div id="dialog">
 				<h2 data-localize="share-it">Share it !</h2>
 				<p data-localize="share-it-message">Share this website made with <span style="color: #E74C3C;">&hearts;</span> on social networks :</p>
-				<span class='st_facebook_hcount' displayText='Facebook'></span>
-				<span class='st_twitter_hcount' displayText='Tweet'></span>
-				<span class='st_googleplus_hcount' displayText='Google +'></span>
-				<span class='st_reddit_hcount' displayText='Reddit'></span>
-				<span class='st_email_hcount' displayText='Email'></span>
-				<span class='st_sharethis_hcount' displayText='ShareThis'></span>
+				<ul class="share-buttons">
+					<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F&t=" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.URL) + '&t=' + encodeURIComponent(document.URL)); return false;"><img src="assets/img/social/facebook.png"></a></li>
+					<li><a href="https://twitter.com/intent/tweet?source=https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F&text=:%20https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F&via=Skyost_" target="_blank" title="Tweet" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '%20'  + encodeURIComponent(document.URL)); return false;"><img src="assets/img/social/twitter.png"></a></li>
+					<li><a href="https://plus.google.com/share?url=https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F" target="_blank" title="Share on Google+" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(document.URL)); return false;"><img src="assets/img/social/google+.png"></a></li>
+					<li><a href="https://www.tumblr.com/share?v=3&u=https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F&t=&s=" target="_blank" title="Post to Tumblr" onclick="window.open('http://www.tumblr.com/share?v=3&u=' + encodeURIComponent(document.URL) + '&t=' +  encodeURIComponent(document.title)); return false;"><img src="assets/img/social/tumblr.png"></a></li>
+					<li><a href="https://www.reddit.com/submit?url=https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F&title=" target="_blank" title="Submit to Reddit" onclick="window.open('http://www.reddit.com/submit?url=' + encodeURIComponent(document.URL) + '&title=' +  encodeURIComponent(document.title)); return false;"><img src="assets/img/social/reddit.png"></a></li>
+					<li><a href="https://wordpress.com/press-this.php?u=https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F&t=&s=" target="_blank" title="Publish on WordPress" onclick="window.open('http://wordpress.com/press-this.php?u=' + encodeURIComponent(document.URL) + '&t=' +  encodeURIComponent(document.title)); return false;"><img src="assets/img/social/wordpress.png"></a></li>
+					<li><a href="mailto:?subject=&body=:%20https%3A%2F%2Fskyost.github.io%2Fisfrancestillaheadofrussia%2F" target="_blank" title="Email" onclick="window.open('mailto:?subject=' + encodeURIComponent(document.title) + '&body=' +  encodeURIComponent(document.URL)); return false;"><img src="assets/img/social/email.png"></a></li>
+				</ul>
 			</div>
 		</div>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.3/jquery.colorbox-min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.3/jquery.colorbox-min.js"></script>
 		<script type="text/javascript" src="assets/js/jquery.localize.min.js"></script>
 		<script type="text/javascript" src="assets/js/jquery.rotate.min.js"></script>
-		<script type="text/javascript">var switchTo5x=true;</script>
-		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 		<script type="text/javascript" src="assets/js/index.js"></script>
 	</body>
 </html>

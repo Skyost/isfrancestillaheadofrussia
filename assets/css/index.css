@@ -116,6 +116,15 @@ body {
 	font-size: 1em;
 }
 
+#dialog ul.share-buttons {
+	list-style: none;
+	padding: 0;
+}
+
+#dialog ul.share-buttons li {
+	display: inline;
+}
+
 .yes {
 	color: #2ECC71;
 }
