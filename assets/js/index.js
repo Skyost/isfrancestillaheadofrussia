@@ -15,13 +15,14 @@ if(!String.format) {
 	};
 }
 
-var year = 2016;
+var year = 2017;
 
 var countryOne;
 var countryTwo;
 var loader = $('#loader');
 var refresh = $('#refresh');
 var footer = $('#page footer p');
+footer.html(String.format(footer.html(), (year - 1), year));
 var defaultFooter = footer.html();
 
 var rotateLoader = function() {
@@ -56,7 +57,7 @@ $(document).ready(function() {
 			delete data.yes;
 			$('[yes="No"]').attr('no', data.no);
 			delete data.no;
-			defaultFooter = data.footer;
+			defaultFooter = String.format(data.footer, (year - 1), year);
 			defaultCallback(data);
 		}
 	});
@@ -99,7 +100,7 @@ function refreshRankings() {
 					continue;
 				}
 				if(currentRanking == 0) {
-					currentRanking++; // < 2015
+					currentRanking++; // < 2016
 					continue;
 				}
 				currentRanking++;
