@@ -17,7 +17,7 @@ import fr.skyost.isfrancestillaheadofrussia.Parser.ParserListener;
 
 public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 
-	private static final short YEAR = 2016;
+	private static final short YEAR = 2017;
 	private static final String URL = "http://kassiesa.home.xs4all.nl/bert/uefa/data/method4/crank%d.html";
 
 	private final Activity parent;
@@ -60,8 +60,9 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 					continue;
 				}
 				currentRanking++;
+				final String name = row.text();
 				for(final Country country : countries) {
-					if(!row.text().equals(country.scrappingName)) {
+					if(!name.equals(country.scrappingName)) {
 						continue;
 					}
 					country.ranking = currentRanking - 1;
@@ -96,6 +97,16 @@ public class Parser extends AsyncTask<ParserListener, Void, Country[]> {
 		for(final ParserListener listener : listeners) {
 			listener.onParseFailed(ex);
 		}
+	}
+	
+	/**
+	 * Gets the year of the ranking.
+	 * 
+	 * @return The year.
+	 */
+	
+	public static final int getYear() {
+		return YEAR;
 	}
 	
 	/**

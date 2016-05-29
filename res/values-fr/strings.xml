@@ -5,7 +5,7 @@
     <string name="main_textfield_response_yes">OUI</string>
     <string name="main_textfield_response_no">NON</string>
     <string name="main_textfield_response_error" formatted="false">Erreur :\n%s</string>
-    <string name="main_textfield_footer" formatted="false">Source : %s. Créé par %s.</string>
+    <string name="main_textfield_footer" formatted="false">Source : %s (%d-%d). Créé par %s.</string>
     <string name="main_share_title">Le partager !</string>
     <string name="main_share_message_yes" formatted="false">La %s (%s) est toujours devant la %s (%s) !</string>
     <string name="main_share_message_no" formatted="false">La %s (%s) est maintenant devant la %s (%s) !</string>

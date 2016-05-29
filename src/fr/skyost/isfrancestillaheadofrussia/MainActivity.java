@@ -65,7 +65,8 @@ public class MainActivity extends Activity implements ParserListener {
 		final String source = this.getString(R.string.ranking_source);
 		final String author = this.getString(R.string.app_author);
 		if(spannableFooter == null) {
-			spannableFooter = new SpannableString(this.getString(R.string.main_textfield_footer, source, author));
+			final int year = Parser.getYear();
+			spannableFooter = new SpannableString(this.getString(R.string.main_textfield_footer, source, year - 1, year, author));
 			spannableFooter.setSpan(new DefaultClickableSpan(this, Parser.getSource()), spannableFooter.toString().indexOf(source), spannableFooter.toString().indexOf(source) + source.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			spannableFooter.setSpan(new DefaultClickableSpan(this, "http://www.skyost.eu"), spannableFooter.toString().indexOf(author), spannableFooter.toString().indexOf(author) + author.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
